@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}" lang="en">
+<body>
+<section layout:fragment="content">
+    <div class="content-body">
+<!--        <input type="hidden" th:name="kitId" th:value="${kitId}"/>-->
+        <input data-val="true" data-val-number="The field KitId must be a number." data-val-required="The KitId field is required." id="KitId" name="KitId" type="hidden" value="0" />
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="row">
+                    <!-- Accordion START -->
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="panel-group primary" id="accordion-2" role="tablist"
+                             aria-multiselectable="true">
+                            <div class="panel panel-default">
+                                <div class="panel-heading" role="tab" id="headingOne2">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion-2" href="#collapseOne-2"
+                                           aria-expanded="true" aria-controls="collapseOne-2">
+                                            Client Search
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseOne-2" class="panel-collapse collapse in" role="tabpanel"
+                                     aria-labelledby="headingOne2">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-sm-1"><strong>Client:</strong></div>
+                                            <div class="col-sm-3">
+                                                <select class="form-control" id="clientList" style="width: 100%;">
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-1"><strong>Kit:</strong></div>
+                                            <div class="col-sm-3">
+                                                <select class="form-control" id="kitList"
+                                                        style="width: 100%;"></select>
+                                            </div>
+                                            <div class="col-sm-1">Business Industry:</div>
+                                            <!--                                                <div class="col-sm-2">-->
+
+                                            <!--                                                    @Html.DropDownListFor(model => model.SelectedIndustry, new SelectList(Model.IndustryTypes, "value", "text", @Model.SelectedIndustry), new { @class = "form-control", @id = "lobList" })-->
+                                            <!--                                                </div>-->
+                                            <div class="col-sm-2">
+                                                <select th:field="*{selectedIndustry}" class="form-control" id="lobList">
+                                                    <option th:each="industry : ${industryTypes}"
+                                                            th:value="${industry.value}"
+                                                            th:text="${industry.text}"
+                                                            th:selected="${industry.selected}">
+                                                    </option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-sm-1"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Accordion END -->
+                </div>
+                <div class="row" id="clientNotification">
+                    <div class="col-md-12">
+                        <div>
+                            <div class="alert alert-warning alert-dismissible fade in" id="alerts">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                                        aria-hidden="true">×</span></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <br/>
+                        <ul class="nav nav-tabs primary">
+                            <li class="active">
+                                <a href="#all-contents" data-toggle="tab">
+                                    <i class="fa fa-ambulance"></i> All Contents
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#priority" data-toggle="tab">
+                                    <i class="fa fa-heart"></i> Priority Kit Items
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#therapeutic-system" data-toggle="tab">
+                                    <i class="fa fa-stethoscope"></i> Kit Content by System
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#pack-contents" data-toggle="tab">
+                                    <i class="fa fa-medkit"></i> Kit Content by Pack
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#diagnostics" data-toggle="tab">
+                                    <i class="fa fa-wheelchair"></i> Diagnostics, Equipment & Manuals
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="tab-content primary">
+                            <div class="tab-pane fade in active" id="all-contents">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <!-- ********************************************** -->
+                                        <table id="dataTables-allContents"
+                                               class="table table-bordered cell-border compact" style="width: 100%">
+                                            <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>Pack</th>
+                                                <th>SubPack</th>
+                                                <th>Product</th>
+                                                <th>Concentration</th>
+                                                <th>Unit Dose</th>
+                                                <th>Unit Volume</th>
+                                                <th>Quantity</th>
+                                                <th>Form or Type</th>
+                                                <th>Size/Dimensions</th>
+                                                <th></th>
+                                                <th></th>
+                                            </tr>
+                                            </thead>
+                                        </table>
+                                        <!-- ********************************************** -->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="therapeutic-system">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-1"><strong>System:</strong></div>
+                                        <div class="col-md-3">
+                                            <select class="form-control" id="systemsList" style="width: 100%">
+                                            </select>
+                                        </div>
+                                        <div class="col-md-1"><strong>Category:</strong></div>
+                                        <div class="col-md-3">
+                                            <select class="form-control" id="subCategoryList" style="width: 100%">
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4"></div>
+                                    </div>
+                                    <br/>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <!-- ********************************************** -->
+                                            <table id="dataTables-systems"
+                                                   class="table table-bordered cell-border compact"
+                                                   style="width: 100%">
+                                                <thead>
+                                                <tr>
+                                                    <th>Pack</th>
+                                                    <th>SubPack</th>
+                                                    <th>Product</th>
+                                                    <th>Item ID</th>
+                                                    <th>Concentration</th>
+                                                    <th>Unit Dose</th>
+                                                    <th>Unit Volume</th>
+                                                    <th>Quantity</th>
+                                                    <th>Form or Type</th>
+                                                    <th>Size/Dimensions</th>
+                                                    <th></th>
+                                                </tr>
+                                                </thead>
+                                            </table>
+                                            <!-- ********************************************** -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade in" id="pack-contents">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-1"><strong>Select Pack:</strong></div>
+                                        <div class="col-md-4 left-aligned">
+                                            <select class="form-control" id="packList" style="width: 100%">
+                                            </select>
+                                        </div>
+                                        <div class="col-md-7"></div>
+                                    </div>
+                                    <br/>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <!-- ********************************************** -->
+                                            <table id="dataTables-pack-medications"
+                                                   class="table table-bordered cell-border compact"
+                                                   style="width: 100%">
+                                                <thead>
+                                                <tr>
+                                                    <th>SubPack</th>
+                                                    <th>Product</th>
+                                                    <th>Concentration</th>
+                                                    <th>Unit Dose</th>
+                                                    <th>Unit Volume</th>
+                                                    <th>Quantity</th>
+                                                    <th>Form or Type</th>
+                                                    <th>Size/Dimensions</th>
+                                                    <th>Item ID</th>
+                                                    <th>Expiration Date</th>
+                                                </tr>
+                                                </thead>
+                                            </table>
+                                            <!-- ********************************************** -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="priority">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <!-- ********************************************** -->
+                                        <table id="dataTables-priority"
+                                               class="table table-bordered cell-border compact" style="width: 100%">
+                                            <thead>
+                                            <tr>
+                                                <th>Pack</th>
+                                                <th>SubPack</th>
+                                                <th>Product</th>
+                                                <th>Item ID</th>
+                                                <th>Expiration Date</th>
+                                                <th>Concentration</th>
+                                                <th>Unit Dose</th>
+                                                <th>Unit Volume</th>
+                                                <th>Quantity</th>
+                                                <th>Form or Type</th>
+                                                <th>Size/Dimensions</th>
+                                                <th></th>
+                                            </tr>
+                                            </thead>
+                                        </table>
+                                        <!-- ********************************************** -->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="diagnostics">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <!-- ********************************************** -->
+                                        <table id="dataTables-diagnostics"
+                                               class="table table-bordered cell-border compact" style="width: 100%">
+                                            <thead>
+                                            <tr>
+                                                <th>Kit Id</th>
+                                                <th>Pack</th>
+                                                <th>SubPack</th>
+                                                <th>Product Name</th>
+                                                <th>Item Id</th>
+                                                <th>Form or Type</th>
+                                                <th>Product Type</th>
+                                            </tr>
+                                            </thead>
+                                        </table>
+                                        <!-- ********************************************** -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<th:block th:fragment="scripts">
+    <script type="text/javascript" th:src="@{/scripts/contentCard2.js}"></script>
+
+    <script>
+
+        $(document).ready(function () {
+
+            var clientLineOfBusiness = '2';
+
+            $('#clientList').select2();
+            $('#kitList').select2();
+            $('#systemsList').select2();
+            $('#subCategoryList').select2();
+            $('#packList').select2();
+
+            //The Change to be made here !!!
+
+            var baseUrl =  /*[[${bUrl}]]*/ '' + 'api/';
+            // var baseUrl = '/' + 'api/';
+            $("#clientNotification").hide();
+
+            //---------------------------------------------
+            // Therapeutic Systems
+            //---------------------------------------------
+            $('#dataTables-systems').DataTable({
+                pageLength: 25,
+                responsive: true,
+                fixedHeader: true,
+                scrollCollapse: true,
+                autoWidth: false,
+                select: {style: 'multiple'},
+                order: [2, 'asc'],
+                processing: true,
+                buttons: [
+                    {
+                        extend: 'excel',
+                        text: "Export to Excel",
+                        exportOptions: {
+                            columns: ':visible'
+                        },
+                        title: 'Kit Products'
+                    },
+                    {
+                        extend: 'pdf',
+                        text: "Export to PDF",
+                        exportOptions: {
+                            columns: ':visible'
+                        },
+                        title: 'Kit Products'
+                    },
+                    {
+                        extend: 'print',
+                        text: 'Print Page',
+                        autoPrint: false
+                    }
+                ],
+                dom: 'BlrTfgtip',
+                lengthMenu: [
+                    [10, 25, 50, -1],
+                    ['10 rows', '25 rows', '50 rows', 'Show all']
+                ],
+                pageLength: 25,
+                ajax: {
+
+                    'url': baseUrl + 'kits/kit/system/0/0/0',
+                    'dataSrc': ''
+                },
+                //rowCallback: function (row, data) {
+                //    if (data.productType == "Controlled") {
+                //        $(row).css("color", "red");
+                //    }
+                //},
+                deferRender: true,
+                columnDefs: [
+                    {
+                        data: 'packName',
+                        width: '225',
+                        targets: 0
+                    },
+                    {
+                        data: 'subPackName',
+                        width: '225',
+                        targets: 1
+                    },
+                    {
+                        data: 'genericName',
+                        targets: 2
+                    },
+                    {
+                        data: "itemNumber",
+                        width: "100",
+                        className: 'text-center',
+                        targets: 3
+                    },
+                    {
+                        data: "concentration",
+                        width: "100",
+                        className: 'text-center',
+                        targets: 4
+                    },
+                    {
+                        data: 'unitDose',
+                        width: '100',
+                        className: 'text-center',
+                        targets: 5
+                    },
+                    {
+                        data: 'unitVolume',
+                        width: '100',
+                        className: 'text-center',
+                        targets: 6
+                    },
+                    {
+                        data: 'unitQuantity',
+                        width: '100',
+                        className: 'text-center',
+                        targets: 7
+                    },
+                    {
+                        data: 'dimension',
+                        width: '200',
+                        targets: 8
+                    },
+                    {
+                        data: 'formOrType',
+                        width: '100',
+                        className: 'text-center',
+                        targets: 9
+                    },
+                    {
+                        data: 'therapeuticCategory',
+                        visible: false,
+                        targets: 10
+                    }
+                ]
+            });
+
+            //---------------------------------------------
+            // Priority Items
+            //---------------------------------------------
+
+            var priorityGroupColumn = 10;
+
+            $('#dataTables-priority').DataTable({
+                pageLength: 25,
+                responsive: true,
+                fixedHeader: true,
+                scrollCollapse: true,
+                autoWidth: false,
+                select: {style: 'multiple'},
+                processing: true,
+                buttons: [
+                    {
+                        extend: 'excel',
+                        text: "Export to Excel",
+                        exportOptions: {
+                            columns: ':visible'
+                        },
+                        title: 'Kit Products'
+                    },
+                    {
+                        extend: 'pdf',
+                        text: "Export to PDF",
+                        exportOptions: {
+                            columns: ':visible'
+                        },
+                        title: 'Kit Products'
+                    },
+                    {
+                        extend: 'print',
+                        text: 'Print Page',
+                        autoPrint: false
+                    }
+                ],
+                drawCallback: function (settings) {
+                    var api = this.api();
+                    var rows = api.rows({page: 'current'}).nodes();
+                    var last = null;
+
+                    api
+                        .column(groupColumn, {page: 'current'})
+                        .data()
+                        .each(function (group, i) {
+                            if (last !== group) {
+                                $(rows)
+                                    .eq(i)
+                                    .before('<tr class="group" style="background-color:grey;color:white; font-weight:bold" ><td colspan="10">' + group + '</td></tr>');
+
+                                last = group;
+                            }
+                        });
+                },
+                dom: 'BlrTfgtip',
+                lengthMenu: [
+                    [10, 25, 50, -1],
+                    ['10 rows', '25 rows', '50 rows', 'Show all']
+                ],
+                pageLength: 25,
+                ajax: {
+
+                    'url': baseUrl + 'kits/kit/priority/0',
+                    'dataSrc': ''
+                },
+                deferRender: true,
+                columnDefs: [
+                    {
+                        data: 'packName',
+                        width: '225',
+                        targets: 0
+                    },
+                    {
+                        data: 'subPackName',
+                        width: '225',
+                        targets: 1
+                    },
+                    {
+                        data: 'genericName',
+                        targets: 2
+                    },
+                    {
+                        data: "itemNumber",
+                        width: "100",
+                        className: 'text-center',
+                        targets: 3
+                    },
+                    {
+                        data: "expirationDate",
+                        width: "100",
+                        className: 'text-center',
+                        render: function (data, type, row) {
+                            if (type === 'sort' || type === 'type' || data === null) {
+                                return data;
+                            }
+                            return moment(data).format('MM/DD/YYYY');
+                        },
+                        targets: 4
+                    },
+                    {
+                        data: "concentration",
+                        width: "100",
+                        className: 'text-center',
+                        targets: 5
+                    },
+                    {
+                        data: 'unitDose',
+                        width: '100',
+                        className: 'text-center',
+                        targets: 6
+                    },
+                    {
+                        data: 'unitVolume',
+                        width: '100',
+                        className: 'text-center',
+                        targets: 7
+                    },
+                    {
+                        data: 'unitQuantity',
+                        width: '100',
+                        className: 'text-center',
+                        targets: 8
+                    },
+                    {
+                        data: 'formOrType',
+                        width: '100',
+                        className: 'text-center',
+                        targets: 9
+                    },
+                    {
+                        data: 'therapeuticCategory',
+                        visible: false,
+                        targets: 10
+                    }
+                ]
+            });
+
+            //---------------------------------------------
+            // Packs
+            //---------------------------------------------
+            $('#dataTables-pack-medications').DataTable({
+                pageLength: 25,
+                responsive: true,
+                fixedHeader: true,
+                scrollCollapse: true,
+                autoWidth: false,
+                select: {style: 'multiple'},
+                order: [2, 'asc'],
+                processing: true,
+                buttons: [
+                    {
+                        extend: 'excel',
+                        text: "Export to Excel",
+                        className: "btn btn-outline-success",
+                        exportOptions: {
+                            columns: ':visible'
+                        },
+                        title: 'Kit Products'
+                    },
+                    {
+                        extend: 'pdf',
+                        text: "Export to PDF",
+                        className: "btn btn-outline-danger",
+                        exportOptions: {
+                            columns: ':visible'
+                        },
+                        title: 'Kit Products'
+                    },
+                    {
+                        extend: 'print',
+                        className: "btn btn-outline-secondary",
+                        text: 'Print Page',
+                        autoPrint: false
+                    }
+                ],
+                dom: 'BlrTfgtip',
+                lengthMenu: [
+                    [10, 25, 50, -1],
+                    ['10 rows', '25 rows', '50 rows', 'Show all']
+                ],
+                pageLength: 25,
+                ajax: {
+                    'url': baseUrl + 'kits/kit/pack/0',
+                    'dataSrc': ''
+                },
+                deferRender: true,
+                columnDefs: [
+                    {
+                        data: 'subPackName',
+                        width: '200',
+                        targets: 0
+                    },
+                    {
+                        data: 'genericName',
+                        targets: 1
+                    },
+                    {
+                        data: "concentration",
+                        width: "200",
+                        className: 'text-center',
+                        targets: 2
+                    },
+                    {
+                        data: 'unitDose',
+                        width: '100',
+                        className: 'text-center',
+                        targets: 3
+                    },
+                    {
+                        data: 'unitVolume',
+                        width: '100',
+                        className: 'text-center',
+                        targets: 4
+                    },
+                    {
+                        data: 'unitQuantity',
+                        width: '100',
+                        className: 'text-center',
+                        targets: 5
+                    },
+                    {
+                        data: 'formOrType',
+                        width: '100',
+                        className: 'text-center',
+                        targets: 6
+                    },
+                    {
+                        data: 'dimension',
+                        width: '100',
+                        targets: 7
+                    },
+                    {
+                        data: "itemNumber",
+                        width: "100",
+                        className: 'text-center',
+                        targets: 8
+                    },
+                    {
+                        data: "expirationDate",
+                        width: "100",
+                        className: 'text-center',
+                        render: function (data, type, row) {
+                            if (type === 'sort' || type === 'type' || data === null) {
+                                return data;
+                            }
+                            return moment(data).format('MM/DD/YYYY');
+                        },
+                        targets: 9
+                    },
+                ]
+            });
+
+            //---------------------------------------------
+            // Diagnostics
+            $('#dataTables-diagnostics').DataTable({
+                pageLength: 25,
+                responsive: true,
+                fixedHeader: true,
+                scrollCollapse: true,
+                autoWidth: false,
+                select: {style: 'multiple'},
+                order: [3, 'asc'],
+                processing: true,
+                buttons: [
+                    {
+                        extend: 'excel',
+                        text: "Export to Excel",
+                        exportOptions: {
+                            columns: ':visible'
+                        },
+                        title: 'Kit Products'
+                    },
+                    {
+                        extend: 'pdf',
+                        text: "Export to PDF",
+                        exportOptions: {
+                            columns: ':visible'
+                        },
+                        title: 'Kit Products'
+                    },
+                    {
+                        extend: 'print',
+                        text: 'Print Page',
+                        autoPrint: false
+                    }
+                ],
+                dom: 'BlrTfgtip',
+                lengthMenu: [
+                    [10, 25, 50, -1],
+                    ['10 rows', '25 rows', '50 rows', 'Show all']
+                ],
+                pageLength: 25,
+                ajax: {
+
+                    'url': baseUrl + 'kits/kit/diagnostics/0',
+                    'dataSrc': ''
+                },
+                deferRender: true,
+                columnDefs: [
+                    {
+                        data: 'kitId',
+                        visible: false,
+                        orderable: false,
+                        targets: 0
+                    },
+                    {
+                        data: 'packName',
+                        width: '200',
+                        targets: 1
+                    },
+                    {
+                        data: 'subPackName',
+                        width: '300',
+                        targets: 2
+                    },
+                    {
+                        data: 'genericName',
+                        targets: 3
+                    },
+                    {
+                        data: 'itemNumber',
+                        width: '200',
+                        targets: 4
+                    },
+                    {
+                        data: 'formOrType',
+                        width: '200',
+                        targets: 5
+                    },
+                    {
+                        data: 'productType',
+                        width: '100',
+                        targets: 6
+                    }
+                ]
+            });
+
+            //---------------------------------------------
+            // All Contents
+            //---------------------------------------------
+            var groupColumn = 11;
+
+            var allItemsTable = $('#dataTables-allContents').DataTable({
+                pageLength: 25,
+                responsive: true,
+                fixedHeader: true,
+                scrollCollapse: true,
+                autoWidth: false,
+                select: {style: 'multiple'},
+                processing: true,
+                buttons: [
+                    {
+                        extend: 'excelHtml5',
+                        text: "Export to Excel",
+                        exportOptions: {
+                            columns: ':visible'
+                        },
+                        title: 'Kit Products'
+                    },
+                    {
+                        extend: 'pdf',
+                        text: "Export to PDF",
+                        exportOptions: {
+                            columns: ':visible'
+                        },
+                        title: 'Kit Products'
+                    },
+                    {
+                        extend: 'print',
+                        text: 'Print Page',
+                        autoPrint: false
+                    }
+                ],
+                drawCallback: function (settings) {
+                    var api = this.api();
+                    var rows = api.rows({page: 'current'}).nodes();
+                    var last = null;
+
+                    api
+                        .column(groupColumn, {page: 'current'})
+                        .data()
+                        .each(function (group, i) {
+                            if (last !== group) {
+                                $(rows)
+                                    .eq(i)
+                                    .before('<tr class="group" style="background-color:grey;color:white; font-weight:bold" ><td colspan="11">' + group + '</td></tr>');
+
+                                last = group;
+                            }
+                        });
+                },
+                dom: 'BlrTfgtip',
+                lengthMenu: [
+                    [10, 25, 50, -1],
+                    ['10 rows', '25 rows', '50 rows', 'Show all']
+                ],
+                pageLength: 25,
+                ajax: {
+
+                    'url': baseUrl + 'kits/kit/contents/0',
+                    'dataSrc': ''
+                },
+                deferRender: true,
+                columnDefs: [
+                    {
+                        className: 'dt-control',
+                        orderable: false,
+                        data: null,
+                        width: "30",
+                        targets: 0,
+                        defaultContent: ''
+                    },
+                    {
+                        data: 'packName',
+                        width: '225',
+                        targets: 1
+                    },
+                    {
+                        data: 'subPackName',
+                        width: '225',
+                        targets: 2
+                    },
+                    {
+                        data: 'genericName',
+                        targets: 3
+                    },
+                    {
+                        data: "concentration",
+                        width: "100",
+                        className: 'text-center',
+                        targets: 4
+                    },
+                    {
+                        data: 'unitDose',
+                        width: '100',
+                        className: 'text-center',
+                        targets: 5
+                    },
+                    {
+                        data: 'unitVolume',
+                        width: '100',
+                        className: 'text-center',
+                        targets: 6
+                    },
+                    {
+                        data: 'unitQuantity',
+                        width: '100',
+                        className: 'text-center',
+                        targets: 7
+                    },
+                    {
+                        data: 'formOrType',
+                        width: '100',
+                        className: 'text-center',
+                        targets: 8
+                    },
+                    {
+                        data: 'dimension',
+                        width: '200',
+                        targets: 9
+                    },
+                    {
+                        data: 'therapeuticCategory',
+                        visible: false,
+                        targets: 10
+                    },
+                    {
+                        data: 'tags',
+                        visible: false,
+                        sortable: false,
+                        searchable: true,
+                        targets: 11
+                    }
+
+                ],
+            });
+
+            allItemsTable.on('click', 'td.dt-control', function (e) {
+                let tr = e.target.closest('tr');
+                let row = allItemsTable.row(tr);
+
+                if (row.child.isShown()) {
+                    // This row is already open - close it
+                    row.child.hide();
+                } else {
+                    // Open this row
+                    row.child(format(row.data())).show();
+                }
+            });
+
+            function format(rowData) {
+                var div = $('<div/>')
+                    .addClass('loading')
+                    .text('Loading...');
+
+                var childUrl = baseUrl + 'kits/kit/contents/item/' + rowData.kitId + '/' + rowData.subPackId + '/' + rowData.productId;
+
+                $.ajax({
+                    url: childUrl,
+                    data: {
+                        name: rowData.name
+                    },
+                    dataType: 'json',
+                    success: function (json) {
+                        var html = '<table class="table table-bordered cell-border compact"><thead><tr style="background-color: lemonchiffon;">'
+                            + '<th>Pack</th>'
+                            + '<th>Sub Pack</th>'
+                            + '<th>Item Id</th>'
+                            + '<th>Product Quantity in Package</th>'
+                            + '<th>Expiration Date</th>'
+                            + '</tr></thead>';
+
+                        json.forEach(obj => {
+
+                            var dateString = '';
+                            if (obj.expiration !== null) {
+                                dateString = moment(obj.expiration).format('YYYY-MM-DD');
+                            }
+                            console.log(dateString);
+
+                            html += ('<tr><td>' + obj.pack + '</td><td>' + obj.subPack + '</td><td>' + obj.itemNumber + '</td><td>' + obj.qtyOnHand + '</td><td>' + dateString + '</td></tr>');
+
+                        });
+                        html + '</table>'
+
+                        div.html(html);
+                        div.removeClass('loading');
+                    }
+                });
+
+                return div;
+            }
+
+            //---------------------------------------------
+            // Load the client list
+            //---------------------------------------------
+            var clientList = $("#clientList");
+
+            // Get the line of business
+            clientLineOfBusiness = $('#lobList').val();
+
+            clientList.empty()
+                .append('<option selected="selected" value="0" disabled = "disabled">Loading.....</option>');
+
+            $.ajax({
+                'async': false,
+                'global': false,
+                'url': baseUrl + 'client-list/2',
+                'dataType': "json",
+                success: function (data) {
+
+                    clientList.empty();
+
+                    $.each(data,
+                        function () {
+                            clientList.append($("<option></option>").val(this['key'])
+                                .html(this['label']));
+                        });
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+
+            //---------------------------------------------
+            // Load the therapeutic systems list
+            //---------------------------------------------
+            var systemsList = $("#systemsList");
+
+            $.ajax({
+                'async': false,
+                'global': false,
+                'url': baseUrl + 'systems-list',
+                'dataType': "json",
+                success: function (data) {
+
+                    systemsList.empty();
+
+                    $.each(data,
+                        function () {
+                            systemsList.append($("<option></option>").val(this['key'])
+                                .html(this['label']));
+                        });
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+
+            //---------------------------------------------
+            // Load the therapeutic Category
+            //---------------------------------------------
+            $("#systemsList").change(function () {
+
+                var firstDropVal = $('#systemsList').val();
+                var subCategoryList = $('#subCategoryList');
+
+                $.ajax({
+                    'async': false,
+                    'global': false,
+                    'url': baseUrl + 'products/therapeutic-categories/' + firstDropVal,
+                    'dataType': "json",
+                    success: function (data) {
+
+                        subCategoryList.empty();
+
+                        $.each(data,
+                            function () {
+                                subCategoryList.append($("<option></option>").val(this['key'])
+                                    .html(this['label']));
+                            });
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            });
+
+            //---------------------------------------------
+            // Load the therapeutic sub class list
+            //---------------------------------------------
+            $("#packList").change(function () {
+
+                var firstDropVal = $('#packList').val();
+
+                var apiUrl = baseUrl + 'kits/kit/pack/' + firstDropVal;
+                $('#dataTables-pack-medications').DataTable().clear().draw();
+                $('#dataTables-pack-medications').DataTable().ajax.url(apiUrl).load();
+            });
+
+            //---------------------------------------------
+            // Load the packs list - changes when the selected
+            // kit changes.
+            //---------------------------------------------
+            $("#kitList").change(function () {
+
+                // Kit list selection has changed
+                var selectedKit = $('#kitList').val();
+
+                // Load pack list
+                loadPacksList(baseUrl, selectedKit);
+
+                var apiUrl = baseUrl + 'kits/kit/contents/' + selectedKit;
+                $('#dataTables-allContents').DataTable().clear().draw();
+                $('#dataTables-allContents').DataTable().ajax.url(apiUrl).load();
+
+                apiUrl = baseUrl + 'kits/kit/priority/' + selectedKit;
+                $('#dataTables-priority').DataTable().clear().draw();
+                $('#dataTables-priority').DataTable().ajax.url(apiUrl).load();
+
+                apiUrl = baseUrl + 'kits/kit/diagnostics/' + selectedKit;
+                $('#dataTables-diagnostics').DataTable().clear().draw();
+                $('#dataTables-diagnostics').DataTable().ajax.url(apiUrl).load();
+            });
+
+            //---------------------------------------------
+            // Process changing the line of business
+            //---------------------------------------------
+            $("#lobList").change(function () {
+
+                var url = baseUrl + 'client-list/';
+
+                var lob = $('#lobList').val();
+                resetPage(url, lob);
+            });
+
+            //---------------------------------------------
+            // Process drop down change messages for
+            // the client list
+            //---------------------------------------------
+            $("#clientList").change(function () {
+
+                // Client list selection has changed
+                var firstDropVal = $('#clientList').val();
+                var kitList = $("#kitList");
+
+                kitList.empty()
+                    .append('<option selected="selected" value="0" disabled = "disabled">Loading.....</option>');
+
+                // Load client kits
+                $.ajax({
+                    'async': false,
+                    'global': false,
+                    'url': baseUrl + 'kits/client/kit-list/' + firstDropVal,
+                    'dataType': "json",
+                    success: function (data) {
+
+                        kitList.empty();
+
+                        $.each(data,
+                            function () {
+                                kitList.append($("<option></option>").val(this['key'])
+                                    .html(this['label']));
+                            });
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+
+                var packList = $('#packList');
+                packList.empty();
+
+                var selectedKit = $('#kitList').val();
+
+                // Load client packs
+                loadPacksList(baseUrl, selectedKit);
+
+                var apiUrl = baseUrl + 'kits/kit/contents/' + selectedKit;
+                $('#dataTables-allContents').DataTable().clear().draw();
+                $('#dataTables-allContents').DataTable().ajax.url(apiUrl).load();
+
+                apiUrl = baseUrl + 'kits/kit/priority/' + selectedKit;
+                $('#dataTables-priority').DataTable().clear().draw();
+                $('#dataTables-priority').DataTable().ajax.url(apiUrl).load();
+
+                apiUrl = baseUrl + 'kits/kit/diagnostics/' + selectedKit;
+                $('#dataTables-diagnostics').DataTable().clear().draw();
+                $('#dataTables-diagnostics').DataTable().ajax.url(apiUrl).load();
+
+                // Load client kits
+                $.ajax({
+                    'async': false,
+                    'global': false,
+                    'url': baseUrl + 'notification/' + firstDropVal,
+                    'dataType': "json",
+                    success: function (data) {
+
+                        $('p').remove('notice');
+
+                        if (data.length === 0) {
+                            $("#clientNotification").hide();
+                        } else {
+                            $('p').remove('.notice');
+                            $("#clientNotification").show();
+                            $.each(data,
+                                function () {
+                                    $('<p class="notice">' + data[0]['notification'] + '</p>').appendTo('#alerts');
+                                });
+                        }
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            });
+
+            //---------------------------------------------
+            // Process drop down change messages for
+            // the category list
+            //---------------------------------------------
+            $("#systemsList").change(function () {
+
+                // Client list selection has changed
+
+                var categoryId = $('#systemsList').val();
+                var subCategoryId = $('#subCategoryList').val();
+                var kitId = $("#kitList").val();
+
+                apiUrl = baseUrl + 'kits/kit/system/' + kitId + '/' + categoryId + '/' + subCategoryId;
+                $('#dataTables-systems').DataTable().clear().draw();
+                $('#dataTables-systems').DataTable().ajax.url(apiUrl).load();
+            });
+
+            //---------------------------------------------
+            // Process drop down change messages for
+            // the category list
+            //---------------------------------------------
+            $("#subCategoryList").change(function () {
+
+                // Client list selection has changed
+                var categoryId = $('#systemsList').val();
+                var subCategoryId = $('#subCategoryList').val();
+                var kitId = $("#kitList").val();
+
+                apiUrl = baseUrl + 'kits/kit/system/' + kitId + '/' + categoryId + '/' + subCategoryId;
+                $('#dataTables-systems').DataTable().clear().draw();
+                $('#dataTables-systems').DataTable().ajax.url(apiUrl).load();
+            });
+        });
+
+    </script>
+</th:block>
+</body>
+</html>
+

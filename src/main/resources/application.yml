@@ -1,0 +1,45 @@
+spring:
+  profiles:
+      active: dev
+  thymeleaf:
+        cache: false
+  # Datasource configuration
+  datasource:
+#    Testing database
+    url: jdbc:sqlserver://PHX1VSQLTEST001\TST;database=ClientKitContentManagement;integratedSecurity=true;encrypt=true;trustServerCertificate=true
+#    url: jdbc:sqlserver://PHX1VMSSQL003;database=MedLinkKitPortal;integratedSecurity=true;encrypt=true;trustServerCertificate=true
+#    username: SSRS_GPReportUser
+#    password: Medaire2012
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    database-platform: org.hibernate.dialect.SQLServerDialect
+
+#  security:
+#    user:
+#      name: username
+#      password: password
+
+
+# Hibernate configuration
+hibernate:
+  show_sql: false
+  format_sql: false
+
+# Add Hibernate and JDBC logging to see where the failure occurs
+
+
+logging:
+  level:
+    org:
+      springframework: INFO  # Add DEBUG when Debugging
+#    org.hibernate.SQL: DEBUG
+#    org.hibernate.type: TRACE#
+
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html

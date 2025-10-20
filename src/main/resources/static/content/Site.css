@@ -1,0 +1,57 @@
+﻿div.dt-info {
+    font-size: 12px;
+    font-weight: bold;
+}
+
+div.dt-search label {
+    font-size: 12px;
+}
+
+div.dt-container .dt-search input {
+    padding: 3px;
+    color: inherit;
+    font-size: 12px;
+}
+
+div.dt-length label {
+    font-size: 12px;
+}
+
+div.dt-button {
+    font-weight: bold;
+    font-size: 12px;
+}
+
+div.dt-buttons > .dt-button {
+    line-height: 1.0em;
+}
+
+td {
+    font-size: 13px; 
+}
+
+.group-column {
+    background-color: gray;
+}
+
+.yellowBackgroundClass {
+    background-color: yellow !important;
+    color: red;
+}
+
+table.dataTable thead > tr > th.sorting, 
+table.dataTable thead > tr > th.sorting_asc, 
+table.dataTable thead > tr > th.sorting_desc, 
+table.dataTable thead > tr > th.sorting_asc_disabled, 
+table.dataTable thead > tr > th.sorting_desc_disabled, 
+table.dataTable thead > tr > td.sorting, 
+table.dataTable thead > tr > td.sorting_asc, 
+table.dataTable thead > tr > td.sorting_desc, 
+table.dataTable thead > tr > td.sorting_asc_disabled, 
+table.dataTable thead > tr > td.sorting_desc_disabled {
+    background-color: beige;
+}
+
+.pace .pace-progress {
+    color: white;
+}

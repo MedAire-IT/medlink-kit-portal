@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title th:text="${title}">Contact</title>
+</head>
+<body>
+<main aria-labelledby="title">
+    <h2 id="title" th:text="${title}">Contact</h2>
+    <h3 th:text="${message}">Your message here</h3>
+
+    <address>
+        One Microsoft Way<br />
+        Redmond, WA 98052-6399<br />
+        <abbr title="Phone">P:</abbr>
+        425.555.0100
+    </address>
+
+    <address>
+        <strong>Support:</strong> mailto:Support@example.comSupport@example.com</a><br />
+        <strong>Marketing:</strong> mailto:Marketing@example.comMarketing@example.com</a>
+    </address>
+</main>
+</body>
+</html>

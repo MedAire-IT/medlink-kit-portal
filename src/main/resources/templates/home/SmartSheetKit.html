@@ -1,0 +1,153 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="">
+<head>
+    <title th:text="'Kit Details - ' + ${kitViewModel.clientName}">Kit Details</title>
+
+    <!-- Include DataTables and Editor JS/CSS here -->
+</head>
+<body>
+<main>
+    <input type="hidden" th:value="${kitViewModel.caseNumber}" name="caseNumber"/>
+
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="page-title">
+                <div class="pull-left">
+                    ${kitViewModel.clientLogo}
+                </div>
+                <div class="pull-right hidden-xs">
+                    <ol class="breadcrumb">
+                        <li th:text="${kitViewModel.kitName}"></li>
+                        <li class="active">
+                            <strong>Case Number: <span th:text="${kitViewModel.caseNumber}"></span></strong>
+                        </li>
+                    </ol>
+                    <div th:if="${kitViewModel.kitNotes != null}">
+                        <div class="alert alert-warning alert-dismissible fade in">
+                            <strong>Warning: </strong><span th:text="${kitViewModel.kitNotes}"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DataTable -->
+    <div class="row">
+        <div class="col-md-10">
+            <table id="dataTables-contentCard" class="table table-bordered cell-border compact" style="width: 100%">
+                <thead>
+                <tr>
+                    <th>Alert</th>
+                    <th>Generic Name</th>
+                    <th>Name as Known by Crew</th>
+                    <th>Strength/Size</th>
+                    <th>Form Type</th>
+                    <th>Unit</th>
+                    <th>Qty Issued</th>
+                    <th>Qty on Hand</th>
+                    <th>Location</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+
+        <div class="col-md-2">
+            <section class="box">
+                <header class="title pull-left">
+                    <h2 class="title pull-left">Client Documents</h2>
+                </header>
+                <div class="content-body">
+                    <p>No Documents</p>
+                </div>
+            </section>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    </main>
+
+    <!-- Scripts -->
+    <script>
+        /*<![CDATA[*/
+        const baseUrl = /*[[${baseUrl}]]*/ '' + '/api/kits/';
+        const kitId = [[${kitViewModel.kitId}]];
+
+        $(document).ready(function () {
+            const editor = new $.fn.dataTable.Editor({
+                table: "#dataTables-contentCard",
+                ajax: {
+                    edit: {
+                        type: 'POST',
+                        url: baseUrl + 'kit/details/smart-sheet/' + kitId
+                    }
+                },
+                idSrc: 'SalesForceId',
+                fields: [
+                    { name: "ClientName" },
+                    { name: "DateAdded" }
+                ]
+            });
+
+            $('#dataTables-contentCard').on('click', 'tbody td:not(:first-child)', function (e) {
+                editor.inline(this);
+            });
+
+            const groupColumn = 9;
+
+            $('#dataTables-contentCard').DataTable({
+                paging: false,
+                responsive: true,
+                fixedHeader: { headerOffset: 60 },
+                scrollCollapse: true,
+                select: { style: 'multiple' },
+                order: [[groupColumn, 'asc'], [1, 'asc']],
+                processing: true,
+                drawCallback: function (settings) {
+                    const api = this.api();
+                    const rows = api.rows({ page: 'current' }).nodes();
+                    let last = null;
+
+                    api.column(groupColumn, { page: 'current' }).data().each(function (group, i) {
+                        if (last !== group) {
+                            $(rows).eq(i).before(
+                                '<tr class="group" style="background-color:grey;color:white; font-weight:bold">' +
+                                '<td colspan="9">' + group + '</td></tr>'
+                            );
+                            dom: 'Tfgti',
+                                ajax: {
+                                url: baseUrl + 'kit/details/smart-sheet/' + kitId,
+                                    dataSrc: ''
+                            },
+                            rowCallback: function (row, data) {
+                                if (data.alert !== "") {
+                                    // $(row).addClass("yellowBackgroundClass");
+                                }
+                            },
+                            deferRender: true,
+                                columnDefs: [
+                                {                    data: 'alert',
+                                    width: '150',
+                                    render: function (data, type, full, meta) {
+                                        if (full.alert !== '') {
+                                            return '<span style="background-color:yellow; color:red; font-weight:bold">' + data + '</span>';
+                                        }
+                                        return '';
+                                    },
+                                    targets: 0
+                                },
+                                { data: 'genericName', targets: 1 },
+                                { data: 'brandName', width: '250', targets: 2 },
+                                { data: 'sizeOrStrength', width: '150', targets: 3 },
+                                { data: 'formOrType', width: '150', targets: 4 },
+                                { data: 'unitOfMeasure', width: '100', targets: 5 },
+                                { data: 'issuedQty', className: 'text-center', width: '100', targets: 6 },
+                                { data: 'altItemQty', className: 'text-center', width: '100', targets: 7 },
+                                { data: 'packName', width: '150', targets: 8 },
+                                { data: 'therapeuticSubClass', visible: false, targets: 9 }
+                            ]
+                        });
+                    });
+        /*]]>*/
+    </script>
+    </body>
+</html>
