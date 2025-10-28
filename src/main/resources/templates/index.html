@@ -358,6 +358,7 @@
                         data: "itemNumber",
                         width: "100",
                         className: 'text-center',
+                        defaultContent: '',
                         targets: 3
                     },
                     {
@@ -387,6 +388,7 @@
                     {
                         data: 'dimension',
                         width: '200',
+                        defaultContent: '',
                         targets: 8
                     },
                     {
@@ -489,6 +491,7 @@
                         data: "itemNumber",
                         width: "100",
                         className: 'text-center',
+                        defaultContent: '',
                         targets: 3
                     },
                     {
@@ -501,6 +504,7 @@
                             }
                             return moment(data).format('MM/DD/YYYY');
                         },
+                        defaultContent: '',
                         targets: 4
                     },
                     {
@@ -534,9 +538,14 @@
                         targets: 9
                     },
                     {
+                        data: 'dimensions',
+                        defaultContent: '',
+                        targets: 10
+                    },
+                    {
                         data: 'therapeuticCategory',
                         visible: false,
-                        targets: 10
+                        targets: 11
                     }
                 ]
             });
@@ -633,12 +642,14 @@
                     {
                         data: 'dimension',
                         width: '100',
+                        defaultContent: '',
                         targets: 7
                     },
                     {
                         data: "itemNumber",
                         width: "100",
                         className: 'text-center',
+                        defaultContent: '',
                         targets: 8
                     },
                     {
@@ -726,6 +737,7 @@
                     {
                         data: 'itemNumber',
                         width: '200',
+                        defaultContent: '',
                         targets: 4
                     },
                     {
@@ -744,7 +756,7 @@
             //---------------------------------------------
             // All Contents
             //---------------------------------------------
-            var groupColumn = 11;
+            var groupColumn = 10;
 
             var allItemsTable = $('#dataTables-allContents').DataTable({
                 pageLength: 25,
@@ -863,6 +875,7 @@
                     {
                         data: 'dimension',
                         width: '200',
+                        defaultContent: '',
                         targets: 9
                     },
                     {
